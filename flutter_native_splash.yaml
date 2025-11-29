@@ -1,0 +1,20 @@
+# Flutter Native Splash Screen Configuration
+# Run: flutter pub run flutter_native_splash:create
+
+flutter_native_splash:
+  # Color for the splash screen background
+  color: "#0b16e6"
+  
+  # Image to display in the center of the splash screen
+  image: assets/splash_logo.png
+  
+  # Android configuration
+  android: true
+  android_12: true
+  
+  # iOS configuration
+  ios: true
+  
+  # Remove splash screen after initialization
+  remove_after: true
+
