@@ -64,61 +64,64 @@ class _PlayerState extends State<Player> {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: bloc,
-      child: SafeArea(
-        child: BlocBuilder<PlayerBloc, PlayState>(
-          bloc: bloc,
-          buildWhen: (previous, current) {
+      child: Container(
+        color: const Color(0xff0b16e6),
+        child: SafeArea(
+          child: BlocBuilder<PlayerBloc, PlayState>(
+            bloc: bloc,
+            buildWhen: (previous, current) {
 
-            if (previous is ErrorState && current is ErrorState) return false;
-            if (previous is LoadingState && current is LoadingState) return false;
-            if (previous is PlayingState && current is PlayingState) {
+              if (previous is ErrorState && current is ErrorState) return false;
+              if (previous is LoadingState && current is LoadingState) return false;
+              if (previous is PlayingState && current is PlayingState) {
 
-              return previous.currentIndex != current.currentIndex ||
-                     previous.playing != current.playing ||
-                     previous.duration != current.duration;
-            }
-            return true;
-          },
-          builder: (context, state) {
-            if (state is ErrorState) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.error_outline, size: 64, color: Colors.red),
-                    const SizedBox(height: 16),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 32),
-                      child: Text(
-                        state.msg,
-                        style: const TextStyle(color: Colors.white),
-                        textAlign: TextAlign.center,
+                return previous.currentIndex != current.currentIndex ||
+                       previous.playing != current.playing ||
+                       previous.duration != current.duration;
+              }
+              return true;
+            },
+            builder: (context, state) {
+              if (state is ErrorState) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                      const SizedBox(height: 16),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 32),
+                        child: Text(
+                          state.msg,
+                          style: const TextStyle(color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () => bloc.add(PlayerLoadEvent(0)),
-                      child: const Text('Retry'),
-                    ),
-                  ],
-                ),
-              );
-            }
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () => bloc.add(PlayerLoadEvent(0)),
+                        child: const Text('Retry'),
+                      ),
+                    ],
+                  ),
+                );
+              }
 
-            if (state is LoadingState) {
+              if (state is LoadingState) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              if (state is PlayingState) {
+                return _buildPlayerContent(state);
+              }
+
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            }
-
-            if (state is PlayingState) {
-              return _buildPlayerContent(state);
-            }
-
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          },
+            },
+          ),
         ),
       ),
     );

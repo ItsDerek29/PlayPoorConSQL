@@ -49,8 +49,8 @@ class _DrawerMenuState extends State<DrawerMenu> {
   Widget build(BuildContext context) {
     return SliderDrawer(
       key: sliderDrawerKey,
-      appBar: SliderAppBar(
-        appBarColor: const Color(0xff0b16e6),
+      appBar: AppBar(
+        backgroundColor: const Color(0xff0b16e6),
         title: const Text(
           "PlayPoor",
           style: TextStyle(
@@ -60,11 +60,13 @@ class _DrawerMenuState extends State<DrawerMenu> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        trailing: IconButton(
-          icon: const Icon(Icons.settings, color: Colors.white),
-          onPressed: () => _showSettingsBottomSheet(context),
-          tooltip: 'Settings',
-        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings, color: Colors.white),
+            onPressed: () => _showSettingsBottomSheet(context),
+            tooltip: 'Settings',
+          ),
+        ],
       ),
       slider: MenuWidget(
         onItemSelected: (title) {

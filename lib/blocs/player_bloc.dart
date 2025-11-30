@@ -390,6 +390,11 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
     NextEvent event,
     Emitter<PlayState> emit,
   ) async {
+    if (totalCanciones == 0) {
+      emit(ErrorState("No songs available"));
+      return;
+    }
+    
     int? currentIndex;
     final currentState = state;
     if (currentState is PlayingState) {
@@ -399,6 +404,10 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
     }
     
     if (currentIndex != null) {
+      // Ensure current index is valid
+      if (currentIndex >= totalCanciones) {
+        currentIndex = 0;
+      }
       final nextIndex = (currentIndex + 1) % totalCanciones;
       add(PlayerLoadEvent(nextIndex));
     }
@@ -408,6 +417,11 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
     PrevEvent event,
     Emitter<PlayState> emit,
   ) async {
+    if (totalCanciones == 0) {
+      emit(ErrorState("No songs available"));
+      return;
+    }
+    
     int? currentIndex;
     final currentState = state;
     if (currentState is PlayingState) {
@@ -417,6 +431,10 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayState> {
     }
     
     if (currentIndex != null) {
+      // Ensure current index is valid
+      if (currentIndex >= totalCanciones) {
+        currentIndex = 0;
+      }
       final prevIndex = (currentIndex - 1 + totalCanciones) % totalCanciones;
       add(PlayerLoadEvent(prevIndex));
     }
