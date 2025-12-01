@@ -49,25 +49,8 @@ class _DrawerMenuState extends State<DrawerMenu> {
   Widget build(BuildContext context) {
     return SliderDrawer(
       key: sliderDrawerKey,
-      appBar: AppBar(
-        backgroundColor: const Color(0xff0b16e6),
-        title: const Text(
-          "PlayPoor",
-          style: TextStyle(
-            fontFamily: 'DMSerif',
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings, color: Colors.white),
-            onPressed: () => _showSettingsBottomSheet(context),
-            tooltip: 'Settings',
-          ),
-        ],
-      ),
+      appBar: const SizedBox.shrink(),
+      isDraggable: false,
       slider: MenuWidget(
         onItemSelected: (title) {
           sliderDrawerKey.currentState?.closeSlider();
@@ -78,7 +61,36 @@ class _DrawerMenuState extends State<DrawerMenu> {
           }
         },
       ),
-      child: widget.child,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: const Color(0xff0b16e6),
+          leading: IconButton(
+            icon: const Icon(Icons.menu, color: Colors.white),
+            onPressed: () {
+              sliderDrawerKey.currentState?.isDrawerOpen ?? false
+                  ? sliderDrawerKey.currentState?.closeSlider()
+                  : sliderDrawerKey.currentState?.openSlider();
+            },
+          ),
+          title: const Text(
+            "PlayPoor",
+            style: TextStyle(
+              fontFamily: 'DMSerif',
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.settings, color: Colors.white),
+              onPressed: () => _showSettingsBottomSheet(context),
+              tooltip: 'Settings',
+            ),
+          ],
+        ),
+        body: widget.child,
+      ),
     );
   }
 
